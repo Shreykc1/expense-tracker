@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import './App.css'; // Import the CSS file
+import './App.css'; 
 
 function ExpenseTracker() {
 
   const [description, setDescription] = useState(localStorage.getItem('description') || '');
   const [category, setCategory] = useState(localStorage.getItem('category') || '');
   const [amount, setAmount] = useState(localStorage.getItem('amount') || '');
-
+  const [total, setTotal] = useState(localStorage.getItem('total') || '');
   const [expenses, setExpenses] = useState(JSON.parse(localStorage.getItem('expenses')) || []);
 
+
+
+  useEffect(() => {
+    
+    const newTotal = expenses.reduce((acc, expense) => acc + parseFloat(expense.amount), 0);
+    setTotal(newTotal.toFixed(2)); 
+    localStorage.setItem('total', newTotal.toFixed(2)); 
+  }, [expenses]);
  
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -21,6 +29,9 @@ function ExpenseTracker() {
       localStorage.setItem('category', category);
       localStorage.setItem('amount', amount);
       localStorage.setItem('expenses', JSON.stringify(expenses));
+      localStorage.setItem('total', total);
+
+   
 
       // Clear the form inputs
       setDescription('');
@@ -44,7 +55,8 @@ function ExpenseTracker() {
     localStorage.setItem('category', category);
     localStorage.setItem('amount', amount);
     localStorage.setItem('expenses', JSON.stringify(expenses));
-  }, [description, category, amount, expenses]);
+    localStorage.setItem('total',total);
+  }, [description, category, amount, expenses,total]);
 
   return (
     <div className="container">
@@ -104,6 +116,8 @@ function ExpenseTracker() {
           ))}
         </tbody>
       </table>
+
+      <h1 className='total'>Total : {total} rs</h1>
     </div>
   );
 }
