@@ -1,25 +1,111 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import './App.css'; // Import the CSS file
 
-function App() {
+function ExpenseTracker() {
+
+  const [description, setDescription] = useState(localStorage.getItem('description') || '');
+  const [category, setCategory] = useState(localStorage.getItem('category') || '');
+  const [amount, setAmount] = useState(localStorage.getItem('amount') || '');
+
+  const [expenses, setExpenses] = useState(JSON.parse(localStorage.getItem('expenses')) || []);
+
+ 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (document && category && !isNaN(amount)) {
+      // Add the new expense to the expenses state
+      const newExpense = { description, category, amount };
+      setExpenses([...expenses, newExpense]);
+      // Update localStorage
+      localStorage.setItem('description', description);
+      localStorage.setItem('category', category);
+      localStorage.setItem('amount', amount);
+      localStorage.setItem('expenses', JSON.stringify(expenses));
+
+      // Clear the form inputs
+      setDescription('');
+      setCategory('');
+      setAmount('');
+    } else {
+      alert('Please fill out all fields with valid data');
+    }
+  };
+
+
+  const handleDelete = (index) => { 
+    const updatedExpenses = expenses.filter((_, i) => i!== index);
+    setExpenses(updatedExpenses);
+    localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
+  };
+
+  
+  useEffect(() => {
+    localStorage.setItem('description', description);
+    localStorage.setItem('category', category);
+    localStorage.setItem('amount', amount);
+    localStorage.setItem('expenses', JSON.stringify(expenses));
+  }, [description, category, amount, expenses]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className="container">
+      <h2>Expense Tracker</h2>
+      <form onSubmit={handleSubmit} className="form-group">
+        <input
+          type="text"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Expense Description"
+          required
+          className="input-field"
+        /><br />
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          required
+          className="input-field"
         >
-          Learn React
-        </a>
-      </header>
+          <option value="">Select Category</option>
+          <option value="Food">Food</option>
+          <option value="Transportation">Transportation</option>
+          <option value="Utilities">Cred</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Others">Others</option>
+        </select><br />
+        <input
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          placeholder="Amount"
+          required
+          className="input-field"
+        /><br />
+        <input type="submit" value="Add Expense" className="submit-button" />
+      </form>
+      <h3>Expense Summary</h3>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {expenses.map((expense, index) => (
+            <tr key={index}>
+              <td>{expense.description}</td>
+              <td>{expense.category}</td>
+              <td>{expense.amount}</td>
+              <td>
+                <button className='del' onClick={() => handleDelete(index)}>Delete</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
 
-export default App;
+export default ExpenseTracker;
