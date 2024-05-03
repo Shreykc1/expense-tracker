@@ -11,6 +11,13 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+h2{
+  margin:40px 0px;
+}
+h3{
+  margin-top:40px;
+}
+
 input[type="text"], select, input[type=number], input[type=submit] {
   margin-bottom: 10px;
   width: 100%;
@@ -142,11 +149,25 @@ th {
     width:100%
   }
 }
-
+@media screen and (max-width: 360px) {
+ .del {
+    height: 4vh;
+    width: 14vw;
+    font-size: 12px;
+  }  
+}
 
 @media screen and (max-width: 330px) {
   .container {
     padding: 5px;
+    margin:10px;
+    height: 95vh;
+  }
+  h2{
+    margin:40px 0px;
+  }
+  h3{
+    margin-top:40px;
   }
 
   input[type="text"], select, input[type=number], input[type=submit] {
