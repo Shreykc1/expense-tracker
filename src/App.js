@@ -60,6 +60,7 @@ function ExpenseTracker() {
 
   return (
     <div className="container">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta>
       <h2>Expense Tracker</h2>
       <form onSubmit={handleSubmit} className="form-group">
         <input
@@ -79,7 +80,7 @@ function ExpenseTracker() {
           <option value="">Select Category</option>
           <option value="Food">Food</option>
           <option value="Transportation">Transportation</option>
-          <option value="Utilities">Cred</option>
+          <option value="Utilities">Cred / Amazon</option>
           <option value="Entertainment">Entertainment</option>
           <option value="Others">Others</option>
         </select><br />
@@ -117,7 +118,7 @@ function ExpenseTracker() {
         </tbody>
       </table>
 
-      <h1 className='total'>Total : {total} rs</h1>
+      <h1 className='total'>Total : {total} /-</h1>
     </div>
   );
 }
